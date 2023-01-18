@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-test_channel_id = os.getenv('TARGET')
+test_channel_id = int(os.getenv('TARGET'))
 
 intents = nextcord.Intents.all()
 client = nextcord.Client(intents=intents)
@@ -17,6 +17,7 @@ async def on_ready():
 @client.event
 async def on_message(message):
     if message.channel.id == test_channel_id:
+        print("found message")
         f = open("last_regex", "r")
         try :
             regex_match = re.search(rf"{f.readline()}", message.content)
@@ -47,3 +48,5 @@ async def check_regex(interaction:nextcord.Interaction):
     regex = f.readline()
     f.close()
     await interaction.response.send_message(f"Current regex is set to `{regex}`.")
+
+client.run(os.getenv('TOKEN'))
