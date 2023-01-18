@@ -4,11 +4,17 @@ from dotenv import load_dotenv
 load_dotenv()
 
 test_channel_id = int(os.getenv('TARGET'))
+log_channel_id = int(os.getenv('LOG'))
 
 intents = nextcord.Intents.all()
 client = nextcord.Client(intents=intents)
 
 open("last_regex", "a").close()
+
+async def doLog(content):
+    print(content)
+    log_channel = await client.fetch_channel(log_channel_id)
+    await log_channel.send(content=content)
 
 @client.event
 async def on_ready():
