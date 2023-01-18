@@ -18,19 +18,19 @@ async def on_ready():
 async def on_message(message):
     if message.channel.id == test_channel_id and not message.author.bot:
         print("found message")
-        f = open("last_regex", "r")
-        try :
-            regex_match = re.search(rf"{f.readline()}", message.content)
+        f = open("last_regex")
+        try:
+            regex_match = re.search(f"{f.readline()}", message.content)
             if regex_match:
                 print("found regex match")
-                embed = nextcord.Embed(title="Match found!", description=f"{regex_match}", color=0xe34234)
+                embed = nextcord.Embed(title="Match found!", description=f"{regex_match}", color=0x3cb371)
                 embed.add_field(name="Span:", value=f"{regex_match.span()}", inline=False)
                 embed.add_field(name="Group:", value=f"{regex_match.group()}", inline=False)
-                embed.set_footer(text=f"String: {regex_match.string()}")
+                embed.set_footer(text=f"String: {message.content}")
                 await message.channel.send(embed=embed)
             else:
                 print("regex match not found")
-                embed = nextcord.Embed(title="Match not found!", description="No match.", color=0x3cb371)
+                embed = nextcord.Embed(title="Match not found!", description="No match.", color=0xe34234)
                 await message.channel.send(embed=embed)
         except:
             print("regex match failed")
