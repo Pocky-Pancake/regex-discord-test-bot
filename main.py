@@ -16,7 +16,7 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
-    if message.channel.id == test_channel_id:
+    if message.channel.id == test_channel_id and not message.author.bot:
         print("found message")
         f = open("last_regex", "r")
         try :
@@ -26,13 +26,13 @@ async def on_message(message):
                 embed.add_field(name="Span:", value=f"{regex_match.span()}", inline=False)
                 embed.add_field(name="Group:", value=f"{regex_match.group()}", inline=False)
                 embed.set_footer(text=f"String: {regex_match.string()}")
+                await message.channel.send(embed=embed)
             else:
                 embed = nextcord.Embed(title="Match not found!", description="No match.", color=0x3cb371)
+                await message.channel.send(embed=embed)
         except:
-            pass
-        else:
             print("regex match failed")
-            message.channel.send("regex match failed")
+            await message.channel.send("regex match failed")
         f.close()
 
 @client.slash_command(description="Change the current regex checker value.")
